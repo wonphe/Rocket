@@ -1,5 +1,7 @@
 package top.ox16.rocket;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.drawable.AnimationDrawable;
@@ -8,6 +10,7 @@ import android.media.SoundPool;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -74,6 +77,13 @@ public class MainActivity extends AppCompatActivity {
         mParams.format = PixelFormat.TRANSLUCENT;
         if (Build.VERSION.SDK_INT >= 26) {//8.0新特性
             mParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+            // 悬浮窗口权限申请
+            if (ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.SYSTEM_ALERT_WINDOW) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, 100);
+            }
         } else {
             mParams.type = WindowManager.LayoutParams.TYPE_TOAST;
         }
